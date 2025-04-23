@@ -13,7 +13,7 @@ const AdsCarousel: React.FC = () => {
   const [ads, setAds] = useState<Ad[]>([]);
   const [loading, setLoading] = useState(false);
   const [index, setIndex] = useState(0);
-  const timer = useRef<NodeJS.Timeout>();
+  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
   const navigate = useNavigate();
 
   // جلب الإعلانات
@@ -37,12 +37,16 @@ const AdsCarousel: React.FC = () => {
   // مؤقّت التبديل
   useEffect(() => {
     if (!ads.length) return;
+  
     timer.current && clearInterval(timer.current);
     timer.current = setInterval(
       () => setIndex(prev => (prev + 1) % ads.length),
       SLIDE_INTERVAL
     );
-    return () => timer.current && clearInterval(timer.current);
+  
+    return () => {
+      timer.current && clearInterval(timer.current);
+    };
   }, [ads]);
 
   if (loading) return <Spinner />;

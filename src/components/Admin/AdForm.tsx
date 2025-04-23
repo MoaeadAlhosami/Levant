@@ -12,10 +12,11 @@ export type FormValues = {
   title: string;
   from_date: string;
   to_date: string;
-  image: FileList;
+  image?: FileList;
   hide_date: '0' | '1';
   is_panorama: '0' | '1';
 };
+
 
 interface Props {
   initialData: Ad | null;
@@ -82,10 +83,11 @@ const AdForm: React.FC<Props> = ({ initialData, onSubmit, onCancel }) => {
     form.append('from_date', data.from_date.replace(/-/g, '/'));
     form.append('to_date', data.to_date.replace(/-/g, '/'));
 
-    if (initialData) {
-      form.append('id', initialData.id.toString());
-    } else {
-      form.append('image', data.image[0]);
+    if (!initialData) {
+      const file = data.image?.[0];
+      if (file) {
+        form.append('image', file);
+      }
     }
 
     await onSubmit(form);
