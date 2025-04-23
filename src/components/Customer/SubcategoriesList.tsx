@@ -1,44 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../../api/index';
+import api from '../../api';
 import Spinner from '../../components/UI/Spinner';
 import { toast } from 'react-toastify';
 import { Category } from '../../types';
 import { useTranslation } from 'react-i18next';
 
-interface SubcategoriesListProps {
+interface Props {
   restaurantId: number;
   parentId: string;
 }
 
-const SubcategoriesList: React.FC<SubcategoriesListProps> = ({ restaurantId, parentId }) => {
+const SubcategoriesList: React.FC<Props> = ({ restaurantId, parentId }) => {
   const { t } = useTranslation();
   const [subs, setSubs] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchSubs = async () => {
+    const fetch = async () => {
       setLoading(true);
       try {
-        const resp = await api.get<{ data: Category[] }>(
+        const { data } = await api.get<{ data: Category[] }>(
           `/customer_api/show_restaurant_categories?restaurant_id=${restaurantId}&category_id=${parentId}`
         );
-        setSubs(resp.data.data);
+        setSubs(data.data);
       } catch {
         toast.error(t('fetch_subcategories_failed'));
       } finally {
         setLoading(false);
       }
     };
-    fetchSubs();
+    fetch();
   }, [restaurantId, parentId, t]);
 
   if (loading) return <Spinner />;
-  if (subs.length === 0)
-    return <p className="text-center py-4">{t('no_subcategories')}</p>;
+  if (!subs.length)
+    return <p className="py-6 text-center text-gray-600">{t('no_subcategories')}</p>;
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
       {subs.map(cat => (
         <Link
           key={cat.id}
@@ -47,10 +47,27 @@ const SubcategoriesList: React.FC<SubcategoriesListProps> = ({ restaurantId, par
               ? `/categories/${cat.id}/subcategories`
               : `/categories/${cat.id}/items`
           }
-          className="block bg-white rounded shadow hover:shadow-lg overflow-hidden"
+          className="
+            group relative overflow-hidden rounded-xl
+            shadow-md hover:shadow-xl transition
+          "
         >
-          <img src={cat.image} alt={cat.name} className="w-full h-32 object-cover" />
-          <h3 className="p-2 text-center font-medium">{cat.name}</h3>
+          <img
+            src={cat.image}
+            alt={cat.name}
+            className="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/0" />
+          <h3
+            className="
+              absolute bottom-3 inset-x-0 text-center
+              mx-2 rounded-md bg-white/10 backdrop-blur
+              py-1.5 text-sm font-semibold text-white tracking-wide
+              transition group-hover:scale-[1.03]
+            "
+          >
+            {cat.name}
+          </h3>
         </Link>
       ))}
     </div>

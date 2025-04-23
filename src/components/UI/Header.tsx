@@ -12,9 +12,19 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-gray-800 text-white px-4 py-3 flex justify-between">
-      <h1 className="text-lg font-semibold">Levant Menu</h1>
-      <button onClick={toggle} className="px-3 py-1 bg-blue-600 rounded">
+    <header
+    className="sticky top-0 z-50 flex items-center justify-between bg-white px-6 py-4 shadow-sm"
+    >
+      <h1 className="text-lg font-semibold text-gray-800">Levant&nbsp;Menu</h1>
+
+      <button
+        onClick={toggle}
+        className="
+      rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white
+      transition-colors hover:bg-blue-700 focus:outline-none
+      focus-visible:ring-2 focus-visible:ring-blue-500
+    "
+      >
         {i18n.language === 'ar' ? 'English' : 'عربي'}
       </button>
     </header>

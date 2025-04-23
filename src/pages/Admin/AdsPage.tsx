@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import api from '../../api/index';
+import api from '../../api';
 import AdsList from '../../components/Admin/AdsList';
 import AdForm from '../../components/Admin/AdForm';
 import { Ad } from '../../types';
@@ -18,8 +18,10 @@ const AdsPage: React.FC = () => {
   const fetchAdsList = async () => {
     setLoading(true);
     try {
-      const resp = await api.get<{ data: Ad[] }>('/admin_api/show_advertisements');
-      setAds(resp.data.data);
+      const { data } = await api.get<{ data: Ad[] }>(
+        '/admin_api/show_advertisements'
+      );
+      setAds(data.data);
     } catch {
       toast.error(t('fetch_ads_failed'));
     } finally {
@@ -78,13 +80,15 @@ const AdsPage: React.FC = () => {
   };
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl mb-4">{t('ads_management')}</h1>
+    <section className="p-6 md:p-10">
+      <h1 className="mb-6 text-3xl font-bold tracking-wide text-gray-800">
+        {t('ads_management')}
+      </h1>
 
       {loading && <Spinner />}
 
       {!loading && !showForm && (
-        <Button onClick={handleAdd} className="mb-4">
+        <Button onClick={handleAdd} className="mb-6">
           {t('add_new_ad')}
         </Button>
       )}
@@ -96,9 +100,11 @@ const AdsPage: React.FC = () => {
           onCancel={() => setShowForm(false)}
         />
       ) : (
-        !loading && <AdsList ads={ads} onEdit={handleEdit} onDelete={handleDelete} />
+        !loading && (
+          <AdsList ads={ads} onEdit={handleEdit} onDelete={handleDelete} />
+        )
       )}
-    </div>
+    </section>
   );
 };
 

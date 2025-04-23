@@ -11,28 +11,28 @@ function App() {
   const [pass, setPass] = useState('');
 
   return (
-    <div className="p-8">
+    <main className="flex min-h-screen items-center justify-center bg-gray-100 p-6">
       {!isAuthenticated ? (
-        <>
+        <div className="w-full max-w-sm space-y-4 rounded-lg bg-white p-8 shadow-md">
           <Input
             placeholder={t('username')}
             value={user}
             onChange={e => setUser(e.target.value)}
-            className="mb-2"
           />
           <Input
             placeholder={t('password')}
             type="password"
             value={pass}
             onChange={e => setPass(e.target.value)}
-            className="mb-4"
           />
-          <Button onClick={() => login(user, pass)}>{t('login')}</Button>
-        </>
+          <Button className="w-full" onClick={() => login(user, pass)}>
+            {t('login')}
+          </Button>
+        </div>
       ) : (
         <Button onClick={logout}>{t('logout')}</Button>
       )}
-    </div>
+    </main>
   );
 }
 

@@ -7,15 +7,22 @@ const CategoriesPage: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="p-8">
-      <div className="mb-4">
-        <Link to="/restaurant" className="text-blue-600 hover:underline">
-          ← {t('back_to_home')}
+    <section className="px-6 py-10 md:px-12">
+      <div className="mb-6">
+        <Link
+          to="/restaurant"
+          className="inline-flex items-center gap-1 text-indigo-600 hover:underline"
+        >
+          <span className="text-xl leading-none">←</span> {t('back_to_home')}
         </Link>
       </div>
-      <h1 className="text-2xl mb-6">{t('main_categories')}</h1>
+
+      <h1 className="mb-8 text-3xl font-bold tracking-wide text-gray-800">
+        {t('main_categories')}
+      </h1>
+
       <CategoriesList />
-    </div>
+    </section>
   );
 };
 

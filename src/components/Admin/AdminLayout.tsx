@@ -9,18 +9,27 @@ const AdminLayout: React.FC = () => {
 
   return (
     <div>
-      <header className="bg-gray-800 text-white p-4 flex justify-between items-center">
-        <h1 className="text-xl">{t('admin_panel')}</h1>
-        <div className="space-x-2">
-          <Button onClick={() => navigate('/admin/orders')} className="bg-blue-600">
+      <header
+        className="
+          sticky top-0 z-40 flex items-center justify-between
+          bg-white px-6 py-4 shadow-sm
+        "
+      >
+        <h1 className="text-xl font-bold tracking-wide text-gray-800">
+          {t('admin_panel')}
+        </h1>
+
+        <div className="flex gap-2">
+          <Button onClick={() => navigate('/admin/orders')}>
             {t('orders')}
           </Button>
-          <Button onClick={() => navigate('/admin/ads')} className="bg-green-600">
+          <Button onClick={() => navigate('/admin/ads')}>
             {t('ads')}
           </Button>
         </div>
       </header>
-      <main className="p-4">
+
+      <main className="p-6">
         <Outlet />
       </main>
     </div>
